@@ -4,8 +4,8 @@ from news.models import Comment
 import pytest
 from pytest_django.asserts import assertRedirects, assertFormError
 from news.forms import WARNING
-from pytils.translit import slugify
 from http import HTTPStatus
+
 
 @pytest.mark.parametrize(
     'need_data, count_objects',
@@ -59,7 +59,6 @@ def test_delete_comment(
     if response.status_code == HTTPStatus.FOUND:
         assertRedirects(response,
                         reverse('news:detail', args=comment_id) + '#comments')
-
 
 
 @pytest.mark.django_db

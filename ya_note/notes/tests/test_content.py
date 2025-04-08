@@ -2,8 +2,6 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from notes.models import Note
 from django.contrib.auth import get_user_model
-from datetime import datetime, timedelta
-from django.utils import timezone
 
 
 User = get_user_model()
@@ -74,7 +72,8 @@ class TestNotes(TestCase):
         response = self.author_client.get(url)
         object_list = response.context['object_list']
         authors_notes = Note.objects.filter(author=self.author)
-        self.assertQuerysetEqual(object_list, authors_notes, transform=lambda x: x)
+        self.assertQuerysetEqual(object_list,
+                                 authors_notes, transform=lambda x: x)
 
     def test_create_note_form_in_context(self):
         response = self.author_client.get(self.CREATE_NOTE_URL)
