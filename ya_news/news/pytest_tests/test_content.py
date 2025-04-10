@@ -4,7 +4,6 @@ from django.conf import settings
 from news.forms import CommentForm
 
 
-@pytest.mark.django_db
 @pytest.mark.usefixtures('many_news')
 def test_count_news_on_home_page(client):
     home_url = reverse('news:home')
@@ -14,7 +13,6 @@ def test_count_news_on_home_page(client):
     assert news_count == settings.NEWS_COUNT_ON_HOME_PAGE
 
 
-@pytest.mark.django_db
 @pytest.mark.usefixtures('many_news')
 def test_sorted_dates_on_home_page(client):
     response = client.get(reverse('news:home'))
@@ -24,7 +22,6 @@ def test_sorted_dates_on_home_page(client):
     assert sorted_dates == all_dates
 
 
-@pytest.mark.django_db
 @pytest.mark.usefixtures('news')
 def test_sorted_dates_in_comments(client, news_id):
     response = client.get(reverse('news:detail', args=news_id))
@@ -36,7 +33,6 @@ def test_sorted_dates_in_comments(client, news_id):
     assert all_timestamps == sorted_timestamps
 
 
-@pytest.mark.django_db
 @pytest.mark.parametrize(
     'client_fixture, expected_result',
     (

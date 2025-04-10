@@ -79,3 +79,8 @@ def form_data_bad_word():
     return {
         'text': BAD_WORDS[0]
     }
+
+
+@pytest.fixture(autouse=True)
+def enable_db_access_for_all_tests(db):
+    pass

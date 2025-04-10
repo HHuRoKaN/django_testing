@@ -1,23 +1,18 @@
-from django.test import TestCase, Client
 from django.urls import reverse
 from notes.models import Note
 from django.contrib.auth import get_user_model
+from .common import TestBase
 
 
 User = get_user_model()
 
 
-class TestNotesList(TestCase):
+class TestNotesList(TestBase):
     NOTES_URL = reverse('notes:list')
 
     @classmethod
     def setUpTestData(cls):
-        cls.author = User.objects.create(username='Автор')
-        cls.author_client = Client()
-        cls.author_client.force_login(cls.author)
-        cls.no_author = User.objects.create(username='Не автор')
-        cls.no_author_client = Client()
-        cls.no_author_client.force_login(cls.no_author)
+        super().setUpTestData()
         author_notes = [
             Note(title=f'Заметка {index}', text='Просто текст.',
                  author=cls.author, slug=f'note_number_{index}')
@@ -44,18 +39,13 @@ class TestNotesList(TestCase):
         self.assertEqual(notes_count, 5)
 
 
-class TestNotes(TestCase):
+class TestNotes(TestBase):
     CREATE_NOTE_URL = reverse('notes:add')
     EDIT_NOTE_URL = 'notes:edit'
 
     @classmethod
     def setUpTestData(cls):
-        cls.author = User.objects.create(username='Автор')
-        cls.author_client = Client()
-        cls.author_client.force_login(cls.author)
-        cls.no_author = User.objects.create(username='Не автор')
-        cls.no_author_client = Client()
-        cls.no_author_client.force_login(cls.no_author)
+        super().setUpTestData()
         cls.note = Note.objects.create(
             title='Заголовок', text='Текст', author=cls.author, slug='note-1'
         )

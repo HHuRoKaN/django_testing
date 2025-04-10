@@ -4,8 +4,8 @@ from news.models import Comment
 import pytest
 from pytest_django.asserts import assertRedirects, assertFormError
 from news.forms import WARNING
+from pytils.translit import slugify
 from http import HTTPStatus
-
 
 @pytest.mark.parametrize(
     'need_data, count_objects',
@@ -29,7 +29,6 @@ def test_user_can_create_comment_without_bad_words(
         assertFormError(response, form='form', field='text', errors=WARNING)
 
 
-@pytest.mark.django_db
 def test_anonymous_user_cant_create_comment(client, form_data, news_id):
     url = reverse('news:detail', args=news_id)
     response = client.post(url, data=form_data)
@@ -39,7 +38,6 @@ def test_anonymous_user_cant_create_comment(client, form_data, news_id):
     assert Comment.objects.count() == 0
 
 
-@pytest.mark.django_db
 @pytest.mark.usefixtures('comment')
 @pytest.mark.parametrize(
     'parametrized_client, expected_status, expected_count_comments',
@@ -61,7 +59,7 @@ def test_delete_comment(
                         reverse('news:detail', args=comment_id) + '#comments')
 
 
-@pytest.mark.django_db
+
 @pytest.mark.parametrize(
     'parametrized_client, expected_status',
     (
